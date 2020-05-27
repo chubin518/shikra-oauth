@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/api/antd/antd.min.css" rel="stylesheet" type='text/css'/>
+    <script type="text/javascript" src="//lib.baomitu.com/vue/2.6.11/vue.min.js"></script>
+    <script type="text/javascript" src="//lib.baomitu.com/moment.js/2.24.0/moment.min.js"></script>
+    <script type="text/javascript" src="//lib.baomitu.com/moment.js/2.24.0/locale/zh-cn.js"></script>
+    <script type="text/javascript" src="//lib.baomitu.com/axios/latest/axios.min.js"></script>
+    <script type="text/javascript" src="/api/antd/antd.min.js"></script>
+
+    <style type="text/css">
+        .user-layout-login label {
+            font-size: 14px;
+        }
+
+        .user-layout-login .forge-password {
+            font-size: 14px;
+        }
+
+        .user-layout-login button.login-button {
+            padding: 0 15px;
+            font-size: 16px;
+            height: 40px;
+            width: 100%;
+        }
+
+        .user-layout-login .user-login-other {
+            text-align: left;
+            margin-top: 24px;
+            line-height: 22px;
+        }
+
+        .user-layout-login .user-login-other .item-icon {
+            font-size: 24px;
+            color: rgba(0, 0, 0, 0.2);
+            margin-left: 16px;
+            vertical-align: middle;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .user-layout-login .user-login-other .item-icon:hover {
+            color: #1890ff;
+        }
+
+        .user-layout-login .user-login-other .register {
+            float: right;
+        }
+
+    </style>
+</head>
+<body>
+<div class="main" id="form_container">
+    <a-form
+            id="formLogin"
+            class="user-layout-login"
+            ref="formLogin"
+            :form="form"
+            @submit="handleSubmit"
+    >
+        <a-alert
+                v-if="isLoginError"
+                type="error"
+                showIcon
+                style="margin-bottom: 24px;"
+                message="用户名或密码错误"
+        />
+        <a-form-item>
+            <a-input
+                    size="large"
+                    type="text"
+                    placeholder="请输入用户名"
+                    v-decorator="['username',{rules: [
+            { required: true, message: '请输入用户名' }], validateTrigger: 'blur'}]"
+            >
+                <a-icon
+                        slot="prefix"
+                        type="user"
+                        :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </a-input>
+        </a-form-item>
+
+        <a-form-item>
+            <a-input
+                    size="large"
+                    type="password"
+                    autocomplete="false"
+                    placeholder="请输入密码"
+                    v-decorator="['password',{rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}]"
+            >
+                <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </a-input>
+        </a-form-item>
+
+        <a-form-item>
+            <a-checkbox v-decorator="['rememberMe', { valuePropName: 'checked' }]">自动登录</a-checkbox>
+            <router-link
+                    :to="{ name: 'recover', params: { user: 'aaa'} }"
+                    class="forge-password"
+                    style="float: right;"
+            >忘记密码
+            </router-link>
+        </a-form-item>
+
+        <a-form-item style="margin-top:24px">
+            <a-button
+                    size="large"
+                    type="primary"
+                    htmlType="submit"
+                    class="login-button"
+                    :loading="state.loginBtn"
+                    :disabled="state.loginBtn"
+            >确定
+            </a-button>
+        </a-form-item>
+    </a-form>
+</div>
+
+<!--js -->
+
+<script type="text/javascript">
+
+    var vue = new Vue({
+        el: "#form_container",
+        data() {
+            let that = this;
+            return {
+                loginBtn: false,
+                isLoginError: false,
+                form: that.$form.createForm(this),
+                state: {
+                    time: 60,
+                    loginBtn: false,
+                    smsSendBtn: false
+                }
+            }
+        },
+
+        methods: {
+            handleSubmit(e) {
+                e.preventDefault()
+                const {
+                    form: {validateFields},
+                    state,
+                    Login
+                } = this
+                state.loginBtn = true
+                validateFields(['username', 'password', 'rememberMe'], {force: true}, (err, values) => {
+                    if (!err) {
+                        const loginParams = {...values}
+                        Login(loginParams)
+                            .then(res => this.loginSuccess(res))
+                            .catch(err => this.requestFailed(err))
+                            .finally(() => {
+                                state.loginBtn = false
+                            })
+                    } else {
+                        setTimeout(() => {
+                            state.loginBtn = false
+                        }, 600)
+                    }
+                })
+            },
+
+            loginSuccess(res) {
+                console.log(res)
+                this.$router.push({path: '/'})
+                this.isLoginError = false
+            },
+            requestFailed(err) {
+                this.isLoginError = true
+                this.$notification['error']({
+                    message: '错误',
+                    description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+                    duration: 4
+                })
+            }
+        }
+    });
+</script>
+</body>
+</html>

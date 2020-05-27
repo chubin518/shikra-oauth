@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: shikra-oauth2-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${nacos.service-addr}
+      config:
+        server-addr: ${nacos.service-addr}
+        file-extension: yml
+    sentinel:
+      transport:
+        dashboard: 122.51.129.23:8080
+      eager: true
+nacos:
+  service-addr: 122.51.129.23:18848
+server:
+  servlet:
+    context-path: /api

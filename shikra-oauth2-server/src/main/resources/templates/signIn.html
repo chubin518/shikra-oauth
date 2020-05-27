@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap Core CSS -->
+    <link href="/api/assets/css/bootstrap.min.css" rel='stylesheet' type='text/css'/>
+    <!-- Custom CSS -->
+    <link href="/api/assets/css/style.css" rel='stylesheet' type='text/css'/>
+    <!-- Graph CSS -->
+    <link href="/api/assets/css/font-awesome.css" rel="stylesheet" type='text/css'>
+    <!-- lined-icons -->
+    <link href="/api/assets/css/icon-font.min.css" rel="stylesheet" type='text/css'/>
+    <!--clock init-->
+</head>
+<body>
+<!--/login-->
+<div class="error_page">
+    <div class="error-top">
+        <h2 class="inner-tittle page">XXX管理系统</h2>
+        <div class="login">
+            <h3 class="inner-tittle t-inner">Login</h3>
+            <form th:action="@{/oauth/sign_in}" method="post">
+                <input type="text" name="username" value="" placeholder="E-mail address">
+                <input type="password" name="password" value="" placeholder="Password">
+                <div class="submit"><input type="submit" value="Login"></div>
+                <div class="clearfix"></div>
+
+                <div class="new">
+                    <p><label class="checkbox11"><input type="checkbox" name="checkbox"><i> </i>Forgot Password
+                        ?</label></p>
+                    <p class="sign">忘记密码 ? <a href="sign.html">Sign Up</a></p>
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--//login-->
+<!--js -->
+<script type="text/javascript" src="/api/assets/js/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="/api/assets/js/jquery.nicescroll.js"></script>
+<script type="text/javascript" src="/api/assets/js/scripts.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script type="text/javascript" src="/api/assets/js/bootstrap.min.js"></script>
+</body>
+</html>

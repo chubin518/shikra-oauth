@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.shikra</groupId>
+    <artifactId>shikra-oauth2</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>shikra-oauth2-server</module>
+        <module>shikra-oauth2-common</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <!--    统一管理jar包版本-->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Maven properties -->
+        <maven.test.skip>false</maven.test.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <junit.version>4.13</junit.version>
+        <lombok.version>1.18.12</lombok.version>
+        <mysql.version>8.0.20</mysql.version>
+        <druid.version>1.1.22</druid.version>
+        <mybatis.spring.boot.version>2.1.2</mybatis.spring.boot.version>
+        <spring.boot.version>2.2.4.RELEASE</spring.boot.version>
+        <spring.cloud.version>Hoxton.SR1</spring.cloud.version>
+        <spring.cloud.alibaba.version>2.2.0.RELEASE</spring.cloud.alibaba.version>
+    </properties>
+
+    <!--    依赖管理配置-->
+    <dependencyManagement>
+        <dependencies>
+            <!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-alibaba-dependencies -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.spring.boot.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
+
+            <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/junit/junit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <fork>true</fork>
+                    <addResources>true</addResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <running.env>dev</running.env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>qa</id>
+            <properties>
+                <running.env>qa</running.env>
+            </properties>
+        </profile>
+        <profile>
+            <id>product</id>
+            <properties>
+                <running.env>product</running.env>
+            </properties>
+        </profile>
+    </profiles>
+</project>
